@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .                        # 用当前目录的 Dockerfile 构建镜像
+    image: todo:latest              # 镜像名:标签
+    container_name: todo            # 容器名
+    ports:
+      - "3002:3000"                 # 宿主机 3002 → 容器 3000（3000、3001 已被前两个项目占用）
+    environment:
+      - TZ=Asia/Shanghai
+      - PORT=3000
+      # ${APP_TITLE:-我的待办清单} 的意思：
+      #   如果同目录的 .env 文件里设置了 APP_TITLE，就用它；没设置就用“我的待办清单”
+      - APP_TITLE=${APP_TITLE:-我的待办清单}
+    volumes:
+      - todo-data:/app/data         # 数据卷：容器重建后待办数据不丢
+    restart: always                 # 崩溃或服务器重启后自动拉起
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# 声明命名数据卷（宝塔 Docker →「存储卷」里能看到 todo_todo-data）
+volumes:
+  todo-data:

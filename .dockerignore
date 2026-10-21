@@ -1,0 +1,18 @@
+# 打包镜像时忽略的文件
+.git
+.github
+.gitignore
+.gitattributes
+.dockerignore
+node_modules
+**/node_modules
+app/data
+app/test
+*.md
+Dockerfile
+docker-compose.yml
+deploy.sh
+.env
+.env.*
+.vscode
+.idea

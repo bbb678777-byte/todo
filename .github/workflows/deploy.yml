@@ -1,0 +1,48 @@
+# GitHub Actions：push 到 main 后，先运行自动测试，测试通过才部署到服务器
+name: Deploy
+
+on:
+  push:
+    branches: [main]        # 推送到 main 分支时触发
+  workflow_dispatch:        # 允许在 Actions 页面手动点击运行
+
+# 同一时间只跑一个部署，新的排队等旧的结束
+concurrency:
+  group: deploy-todo
+  cancel-in-progress: false
+
+jobs:
+  # ========== 第 1 关：自动测试 ==========
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 下载代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 运行自动测试
+        run: node --test app/test/todos.test.js
+
+  # ========== 第 2 关：部署（只有 test 成功才会执行） ==========
+  deploy:
+    needs: test             # 依赖 test：测试失败，这一步就不会运行
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: SSH 到服务器执行部署
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          command_timeout: 10m
+          script: |
+            set -e
+            cd /www/wwwroot/todo
+            bash deploy.sh

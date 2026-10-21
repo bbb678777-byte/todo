@@ -1,0 +1,18 @@
+# 本地运行产生的待办数据，不提交
+app/data/
+
+# 环境配置（每台机器自己的配置，可能含密码，不提交）
+# 注意：.env.example 是模板，需要提交，所以用 ! 排除
+.env
+.env.*
+!.env.example
+
+node_modules/
+*.log
+*.pem
+id_rsa*
+id_ed25519*
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
