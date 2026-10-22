@@ -82,6 +82,7 @@ function renderHome(error) {
           <button class="check" title="切换完成状态">${t.done ? '✅' : '⬜'}</button>
         </form>
         <span class="title">${escapeHtml(t.title)}</span>
+        <span class="time">${todos.formatTime(t.createdAt)}</span>
         <form method="POST" action="/todos/${t.id}/delete" class="inline">
           <button class="del" title="删除">✕</button>
         </form>
@@ -94,7 +95,7 @@ function renderHome(error) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${escapeHtml(APP_TITLE)} v${VERSION}</title>
+  <title>第一次改${escapeHtml(APP_TITLE)} v${VERSION}</title>
   <style>
     body { font-family: -apple-system, "Microsoft YaHei", sans-serif; background: #f2f4f8; margin: 0; }
     .wrap { max-width: 560px; margin: 40px auto; padding: 0 16px; }
@@ -110,6 +111,7 @@ function renderHome(error) {
     li { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid #eee; }
     li .title { flex: 1; word-break: break-word; }
     li.done .title { color: #aaa; text-decoration: line-through; }
+    li .time { color: #bbb; font-size: 12px; }
     .inline { margin: 0; }
     .check, .del { background: none; border: 0; cursor: pointer; font-size: 18px; padding: 0 4px; }
     .del { color: #ccc; font-size: 16px; }
@@ -125,7 +127,7 @@ function renderHome(error) {
   <div class="wrap">
     <div class="card">
       <h1>✅ ${escapeHtml(APP_TITLE)}</h1>
-      <div class="sub">版本 v${VERSION} · 主机 ${escapeHtml(os.hostname())}</div>
+      <div class="sub">乌兹版本 v${VERSION} · 主机 ${escapeHtml(os.hostname())}</div>
       <form method="POST" action="/todos" class="add">
         <input name="title" maxlength="${todos.MAX_TITLE_LENGTH}" placeholder="要做什么？" required autofocus>
         <button type="submit">添加</button>

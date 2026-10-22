@@ -71,3 +71,8 @@ test('clearDone 和 stats：清除已完成并正确统计', () => {
   list = todos.clearDone(list);
   assert.deepStrictEqual(todos.stats(list), { total: 2, done: 0, left: 2 });
 });
+
+test('formatTime：转换成北京时间', () => {
+  assert.strictEqual(todos.formatTime('2026-10-21T06:30:00.000Z'), '10-21 14:30');
+  assert.strictEqual(todos.formatTime('2026-10-21T18:05:00.000Z'), '10-22 02:05'); // 跨天
+});

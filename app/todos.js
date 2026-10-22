@@ -58,6 +58,11 @@ function stats(list) {
   return { total: list.length, done, left: list.length - done };
 }
 
+function formatTime(iso) {
+  const d = new Date(new Date(iso).getTime() + 8 * 60 * 60 * 1000); // UTC 时间 + 8 小时 = 北京时间
+  const pad = (n) => String(n).padStart(2, '0'); // 补零：5 → 05
+  return `${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
+}
 module.exports = {
   MAX_TITLE_LENGTH,
   MAX_TODOS,
@@ -67,4 +72,5 @@ module.exports = {
   removeTodo,
   clearDone,
   stats,
+  formatTime
 };

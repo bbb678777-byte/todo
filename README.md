@@ -813,6 +813,11 @@ Cloning into '/www/wwwroot/todo'...
 Receiving objects: 100% (18/18), done.
 ```
 
+❌ 如果报错 `ssh: Could not resolve hostname github-todo: Temporary failure in name resolution`：
+说明服务器不认识 `github-todo` 这个别名，也就是 **7.4 第 4 步的 `~/.ssh/config` 没有配置成功**（或者没做 7.4）。
+- 仓库是 **Public** → 不需要别名，改用上面公开仓库的 HTTPS 命令。
+- 仓库是 **Private** → 用 `cat ~/.ssh/config` 检查里面有没有 `Host github-todo` 那一段，没有就回去重做 7.4 第 1～5 步，`ssh -T git@github-todo` 成功后再 clone。
+
 ❌ 如果报错 `fatal: destination path '/www/wwwroot/todo' already exists and is not an empty directory.`：说明这个目录已经存在了。如果是之前失败留下的，可以删掉重来（⚠️ 确认里面没有重要文件）：
 
 ```bash
